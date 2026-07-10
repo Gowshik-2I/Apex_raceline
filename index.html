@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex Raceline — EV Kart Team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,500;1,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1B4A;
+    --navy-deep:#050B24;
+    --navy-mid:#142B6B;
+    --ink:#0E1430;
+    --ink-soft:#454C66;
+    --steel:#6B7290;
+    --ice:#3E6BFA;
+    --ice-dark:#2A50D6;
+    --sky:#8FC7FF;
+    --paper:#FFFFFF;
+    --mist:#F3F6FC;
+    --line:#E2E6F3;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(ellipse 60% 45% at 100% 8%, rgba(62,107,250,0.14), transparent 65%),
+      radial-gradient(ellipse 50% 40% at 100% 45%, rgba(62,107,250,0.08), transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+  a{color:inherit;}
+  .wrap{max-width:1240px; margin:0 auto; padding:0 32px;}
+  ::selection{background:var(--ice); color:#fff;}
+
+  /* ===== NAV ===== */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,255,255,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:78px; gap:24px;
+  }
+  .brand{ display:flex; align-items:center; gap:16px; flex-shrink:0; }
+  .brand-logo{ height:40px; width:40px; object-fit:cover; border-radius:50%; display:block; }
+  .brand-divider{ width:1px; height:28px; background:var(--line); }
+  .brand-name{ font-family:'Lora', serif; font-weight:500; font-size:15px; letter-spacing:0.02em; color:var(--ink); line-height:1.2; }
+  .brand-name b{ display:block; font-weight:600; }
+
+  .navlinks{ display:flex; gap:26px; font-family:'Lora', serif; font-size:15px; color:var(--ink-soft); }
+  .navlinks a{ text-decoration:none; transition:color 0.2s ease; }
+  .navlinks a:hover, .navlinks a:focus-visible{ color:var(--ice); }
+  .navlinks a:focus-visible{ outline:2px solid var(--ice); outline-offset:4px; border-radius:2px; }
+  @media (max-width:960px){ .navlinks{ display:none; } }
+
+  /* ===== HERO ===== */
+  header.hero{ position:relative; padding:72px 0 110px; overflow:hidden; }
+  .hero-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; position:relative; z-index:1; }
+  @media (max-width:960px){ .hero-grid{ grid-template-columns:1fr; } }
+
+  .apex-watermark{
+    position:absolute; top:-8%; left:-6%; width:520px; height:520px;
+    opacity:0.05; pointer-events:none; z-index:0;
+  }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-weight:600;
+    font-size:13px; letter-spacing:0.14em; color:var(--ice);
+    margin-bottom:18px;
+  }
+  h1.title{
+    font-family:'Archivo Black', sans-serif;
+    font-size:clamp(44px, 6vw, 76px);
+    line-height:0.96; letter-spacing:-0.01em;
+    text-transform:uppercase;
+    color:var(--navy);
+  }
+  .tagline{
+    font-family:'Lora', serif; font-style:italic; font-size:19px;
+    color:var(--ink-soft); border-left:3px solid var(--ice);
+    padding-left:16px; margin:26px 0 20px; max-width:420px;
+  }
+  .hero-sub{ font-size:15.5px; color:var(--steel); max-width:440px; line-height:1.6; }
+
+  .hero-actions{ margin-top:34px; display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    font-family:'Inter', sans-serif; font-weight:600; font-size:13.5px;
+    letter-spacing:0.02em; padding:15px 28px; border-radius:999px;
+    text-decoration:none; display:inline-block; transition:transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    border:none; cursor:pointer;
+  }
+  .btn-primary{ background:var(--ice); color:#fff; }
+  .btn-primary:hover{ background:var(--ice-dark); transform:translateY(-2px); box-shadow:0 10px 24px rgba(62,107,250,0.30); }
+  .btn-ghost{ border:1.5px solid var(--navy); color:var(--navy); background:transparent; }
+  .btn-ghost:hover{ background:var(--navy); color:#fff; }
+  .btn:focus-visible{ outline:2px solid var(--ice); outline-offset:3px; }
+
+  /* Hero visual */
+  .hero-visual{ position:relative; }
+  .hero-photo{
+    position:relative; border-radius:32px; overflow:hidden;
+    aspect-ratio:4/4.6; width:100%;
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 10%, rgba(143,199,255,0.14), transparent 60%),
+      linear-gradient(165deg, var(--navy-mid) 0%, var(--navy) 55%, var(--navy-deep) 100%);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .hero-photo svg{ width:56%; height:auto; opacity:0.95; }
+  .hero-photo-img{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; object-position:center;
+  }
+  .hero-photo .stripe{
+    position:absolute; inset:0; z-index:2;
+    background:repeating-linear-gradient(115deg, transparent 0 46px, rgba(62,107,250,0.14) 46px 50px);
+  }
+  .badge{
+    position:absolute; background:var(--card); border-radius:16px;
+    padding:14px 20px; box-shadow:0 16px 40px rgba(5,11,36,0.22);
+  }
+  .badge .num{ font-family:'Archivo Black', sans-serif; color:var(--ice); font-size:24px; line-height:1; }
+  .badge .lbl{ font-family:'Inter', sans-serif; font-size:12.5px; color:var(--steel); margin-top:4px; }
+  .badge-1{ top:8%; right:-6%; }
+  .badge-2{ bottom:10%; left:-7%; }
+  @media (max-width:600px){
+    .badge-1{ right:2%; } .badge-2{ left:2%; }
+    .badge{ padding:10px 16px; }
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  section{ position:relative; padding:88px 0; border-top:1px solid var(--line); }
+  .sec-head{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:48px; flex-wrap:wrap; gap:16px; }
+  .sec-tag{
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:12px; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--ice); margin-bottom:10px;
+  }
+  h2.sec-title{
+    font-family:'Archivo Black', sans-serif; text-transform:uppercase;
+    font-size:clamp(30px, 4vw, 46px); line-height:0.98; color:var(--navy);
+  }
+  .sec-note{ font-family:'Lora', serif; font-style:italic; font-size:14.5px; color:var(--steel); max-width:320px; text-align:right; }
+  @media (max-width:720px){ .sec-note{ text-align:left; } }
+
+  /* ===== ROSTER GRID ===== */
+  .roster-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:22px; }
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:20px;
+    padding:28px; position:relative;
+    opacity:0; transform:translateY(24px);
+    transition:opacity 0.6s ease, transform 0.6s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .card.in-view{ opacity:1; transform:translateY(0); }
+  .card:hover{ box-shadow:0 20px 40px rgba(11,27,74,0.08); border-color:#D6DEF2; }
+
+  .card-top{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; }
+  .num-badge{
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:12px;
+    color:var(--ice); background:#E9EFFE; border-radius:999px; padding:6px 12px;
+  }
+  .avatar{
+    width:50px; height:50px; border-radius:50%;
+    background:var(--mist); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Archivo Black', sans-serif; font-size:18px; color:var(--ice);
+  }
+  .card-name{ font-family:'Archivo Black', sans-serif; font-size:23px; text-transform:uppercase; line-height:1.05; margin-top:16px; color:var(--navy); }
+  .card-role{ font-family:'Lora', serif; font-style:italic; font-size:13.5px; color:var(--ice-dark); margin-top:6px; }
+  .card-bio{ font-size:14px; color:var(--steel); line-height:1.6; margin-top:14px; min-height:60px; }
+
+  .meters{ margin-top:20px; display:flex; flex-direction:column; gap:12px; }
+  .meter-row{ display:flex; align-items:center; gap:12px; }
+  .meter-label{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--steel);
+    width:108px; flex-shrink:0; text-transform:uppercase; letter-spacing:0.03em;
+  }
+  .meter-track{ flex:1; height:7px; background:var(--mist); display:flex; gap:2px; padding:2px; border-radius:999px; border:1px solid var(--line); }
+  .meter-seg{ flex:1; background:transparent; border-radius:999px; transition:background 0.4s ease; }
+  .meter-seg.on{ background:var(--ice); }
+
+  /* ===== ACHIEVEMENTS ===== */
+  .achv-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:22px; }
+  .achv-card{
+    background:var(--card); border:1px solid var(--line); border-radius:20px;
+    padding:32px 28px; transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .achv-card:hover{ transform:translateY(-4px); box-shadow:0 20px 40px rgba(11,27,74,0.08); border-color:#D6DEF2; }
+  .achv-icon{
+    width:52px; height:52px; border-radius:14px; background:#E9EFFE; color:var(--ice);
+    display:flex; align-items:center; justify-content:center; margin-bottom:18px;
+  }
+  .achv-icon svg{ width:26px; height:26px; }
+  .achv-name{ font-family:'Archivo Black', sans-serif; text-transform:uppercase; font-size:19px; color:var(--navy); margin-bottom:10px; }
+  .achv-desc{ font-size:14px; color:var(--steel); line-height:1.65; }
+
+  /* ===== ABOUT / VISION (shared two-column layout) ===== */
+  .about-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:64px; align-items:start; }
+  @media (max-width:860px){ .about-grid{ grid-template-columns:1fr; gap:40px; } }
+  .about-text p{ font-size:16px; line-height:1.75; color:var(--steel); margin-bottom:18px; }
+  .about-text p strong{ color:var(--navy); font-weight:600; }
+  .specs-panel{ background:var(--mist); border-radius:20px; padding:30px; }
+  .specs-panel .spec-row{
+    display:flex; justify-content:space-between; padding:13px 0; border-bottom:1px solid var(--line);
+    font-family:'Inter', sans-serif; font-size:13.5px;
+  }
+  .specs-panel .spec-row:last-child{ border-bottom:none; }
+  .specs-panel .spec-row span:first-child{ color:var(--steel); text-transform:uppercase; letter-spacing:0.04em; font-size:11px; }
+  .specs-panel .spec-row span:last-child{ color:var(--ice-dark); font-weight:600; }
+
+  /* ===== SPONSORSHIP ===== */
+  .sponsor-intro{
+    font-family:'Lora', serif; font-style:italic; font-size:15.5px; color:var(--steel);
+    max-width:680px; line-height:1.75; margin-bottom:44px;
+  }
+  .sponsor-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:22px; }
+  .sponsor-card{
+    background:var(--card); border:1px solid var(--line); border-radius:20px;
+    padding:38px 26px 30px; position:relative;
+    display:flex; flex-direction:column; justify-content:space-between;
+    transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .sponsor-card:hover{ transform:translateY(-4px); box-shadow:0 20px 40px rgba(11,27,74,0.08); border-color:#D6DEF2; }
+  .sponsor-card.featured{ border-color:var(--ice); box-shadow:0 16px 36px rgba(62,107,250,0.14); }
+  @media (max-width:768px){ .sponsor-card.featured{ transform:none; margin-top:14px; } }
+  .sponsor-badge{
+    position:absolute; top:-15px; left:50%; transform:translateX(-50%);
+    background:var(--ice); color:#fff; font-family:'IBM Plex Mono', monospace;
+    font-weight:600; font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
+    padding:7px 18px; border-radius:999px; white-space:nowrap;
+  }
+  .sponsor-tier{ font-family:'Archivo Black', sans-serif; text-transform:uppercase; font-size:22px; color:var(--navy); }
+  .sponsor-price{
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:22px;
+    color:var(--ice-dark); margin:10px 0 24px;
+  }
+  .sponsor-features{ list-style:none; text-align:left; margin-bottom:30px; flex-grow:1; }
+  .sponsor-features li{
+    font-size:13.5px; color:var(--steel); line-height:1.6; margin-bottom:12px;
+    display:flex; align-items:flex-start;
+  }
+  .sponsor-features li::before{ content:'✓'; color:var(--ice); font-weight:700; margin-right:10px; }
+  .sponsor-card .btn{ margin:0 auto; }
+
+  /* ===== PAST SPONSORS CAROUSEL ===== */
+  .past-sponsors{ margin-top:70px; }
+  .sponsor-carousel-wrap{
+    overflow-x:auto; overflow-y:hidden; padding:10px 4px 22px;
+    scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch;
+  }
+  .sponsor-carousel-wrap::-webkit-scrollbar{ height:8px; }
+  .sponsor-carousel-wrap::-webkit-scrollbar-track{ background:var(--mist); border-radius:999px; }
+  .sponsor-carousel-wrap::-webkit-scrollbar-thumb{ background:var(--line); border-radius:999px; }
+  .sponsor-carousel-wrap::-webkit-scrollbar-thumb:hover{ background:var(--steel); }
+  .sponsor-carousel{ display:flex; gap:20px; width:max-content; }
+  .sponsor-logo-card{
+    scroll-snap-align:start;
+    width:220px; flex:0 0 auto;
+    background:var(--card); border:1px solid var(--line); border-radius:20px;
+    padding:26px 22px; text-align:center;
+    transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .sponsor-logo-card:hover{ transform:translateY(-4px); box-shadow:0 20px 40px rgba(11,27,74,0.08); border-color:#D6DEF2; }
+  .sponsor-logo-box{
+    width:84px; height:84px; margin:0 auto 18px;
+    border-radius:20px; background:var(--mist); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .sponsor-logo-box img{ width:100%; height:100%; object-fit:contain; padding:14px; }
+  .sponsor-logo-name{ font-weight:700; font-size:16px; margin-bottom:8px; }
+  .sponsor-logo-desc{ font-size:13.5px; line-height:1.55; color:var(--ink-soft); }
+
+  /* ===== JOIN ===== */
+  .join{ border-bottom:none; padding-bottom:110px; }
+  .join-panel{
+    background:linear-gradient(135deg, var(--navy-mid), var(--navy-deep));
+    border-radius:28px; padding:60px 40px; text-align:center; position:relative; overflow:hidden;
+  }
+  .join-panel::before{
+    content:''; position:absolute; width:360px; height:360px; border-radius:50%;
+    background:radial-gradient(circle, rgba(62,107,250,0.32), transparent 70%);
+    top:-160px; right:-120px;
+  }
+  .join-panel h2{ font-family:'Archivo Black', sans-serif; text-transform:uppercase; font-size:clamp(28px, 5vw, 44px); color:#fff; position:relative; }
+  .join-panel p{ font-family:'Lora', serif; font-style:italic; color:#B7C2E6; max-width:480px; margin:16px auto 30px; position:relative; }
+  .socials{ display:flex; justify-content:center; gap:14px; flex-wrap:wrap; position:relative; }
+  .socials a{
+    font-family:'Inter', sans-serif; font-weight:600; font-size:12.5px;
+    border:1px solid #2C3D74; color:#fff; padding:12px 20px; border-radius:999px; text-decoration:none;
+    transition:all 0.2s ease;
+  }
+  .socials a:hover, .socials a:focus-visible{ border-color:var(--ice); background:var(--ice); }
+  .sparkle{ position:absolute; bottom:26px; right:30px; color:var(--sky); font-size:20px; opacity:0.9; }
+
+  footer{ padding:32px 0; }
+  footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  footer p{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--steel); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">
+      <img src="IMG_5078.JPG.jpeg" alt="Apex Raceline logo" class="brand-logo">
+      <div class="brand-divider"></div>
+      <div class="brand-name"><b>Apex Raceline</b>Electric Kart Team</div>
+    </div>
+    <div class="navlinks">
+      <a href="#about">About Us</a>
+      <a href="#roster">The Team</a>
+      <a href="#sponsors">Sponsors</a>
+      <a href="#join">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <svg class="apex-watermark" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 10L145 130L190 200H160L100 100L40 200H10L55 130L100 10Z" fill="#0B1B4A"/>
+    <path d="M100 95L124 155L100 200L76 155L100 95Z" fill="#0B1B4A"/>
+  </svg>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">SEASON 2026&ndash;2027</div>
+        <h1 class="title">Apex<br>Raceline</h1>
+        <p class="tagline">Every apex, engineered.</p>
+        <p class="hero-sub">An independent, student-built electric karting team — designing our own chassis, battery systems, and race strategy from the ground up.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#sponsors">Partner With Us</a>
+          <a class="btn btn-ghost" href="#roster">Meet the Team</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-photo">
+          <div class="stripe"></div>
+          <img src="logo1.jpeg" alt="Apex Raceline kart" class="hero-photo-img">
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Behind the Build</div>
+        <h2 class="sec-title">Who We Are</h2>
+      </div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p><strong>Apex Raceline</strong> is a student-built electric go-kart team. Every part of the car — chassis, battery pack, motor controller, and driver software — is designed and built in-house by the crew you see above.</p>
+        <p>We compete in regional EV karting circuits and treat every race weekend as a live test of the systems we built in the shop the week before. Wins matter, but so does the data we bring home.</p>
+        <p>New members join a subsystem team from day one — no bench-warming. If you can solder, code, weld, or just love the smell of hot rubber on tarmac, there's a seat for you.</p>
+      </div>
+      <div class="specs-panel">
+        <div class="spec-row"><span>Founded</span><span>2024</span></div>
+        <div class="spec-row"><span>Base</span><span>SKCET</span></div>
+        <div class="spec-row"><span>Chassis</span><span>AISI 4130</span></div>
+        <div class="spec-row"><span>Races / Season</span><span>2</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="achievements">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Proven On Track</div>
+        <h2 class="sec-title">Achievements</h2>
+      </div>
+      <p class="sec-note">Recognition earned on and off the grid.</p>
+    </div>
+
+    <div class="achv-grid">
+      <div class="achv-card">
+        <div class="achv-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 21H16M12 17V21M6 4H18V9C18 12.3137 15.3137 15 12 15C8.68629 15 6 12.3137 6 9V4Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6 6H3.5C3.5 8.5 4.5 10 6 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18 6H20.5C20.5 8.5 19.5 10 18 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="achv-name">Lightest Kart Award</div>
+        <p class="achv-desc">Recognised for engineering the lightest kart chassis on the grid — a direct result of our in-house design and material optimisation.</p>
+      </div>
+
+      <div class="achv-card">
+        <div class="achv-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 21H16M12 17V21M6 4H18V9C18 12.3137 15.3137 15 12 15C8.68629 15 6 12.3137 6 9V4Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6 6H3.5C3.5 8.5 4.5 10 6 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18 6H20.5C20.5 8.5 19.5 10 18 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="achv-name">Femina Award</div>
+        <p class="achv-desc">Honoured for the team's contribution to promoting women in engineering and motorsport within the student community.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="vision-mission">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Our Foundation</div>
+        <h2 class="sec-title">Vision & Mission</h2>
+      </div>
+      <p class="sec-note">Driven by innovation, powered by passion</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p><strong>Vision:</strong><br>
+        To become a leading student-driven EV karting team that innovates sustainable mobility solutions and represents excellence in engineering, performance, and teamwork at national and international levels.</p>
+
+        <p><strong>Mission:</strong><br>
+        To design and develop high-performance electric karts through continuous learning, innovation, and collaboration, while empowering students with practical engineering skills and promoting eco-friendly transportation technologies.</p>
+      </div>
+
+      <div class="specs-panel">
+        <div class="spec-row">
+          <span>Mentor</span>
+          <span>Visveswaran C</span>
+        </div>
+        <div class="spec-row">
+          <span>Mentor</span>
+          <span>SP Karthi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="roster">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">The Lineup</div>
+        <h2 class="sec-title">Roster & Skill Sheets</h2>
+      </div>
+      <p class="sec-note">Ten crew, ten disciplines — one car.</p>
+    </div>
+
+    <div class="roster-grid" id="rosterGrid">
+      <div class="card">
+        <div class="card-top"><span class="num-badge">#01</span><div class="avatar">A</div></div>
+        <div class="card-name">Aakash K A</div>
+        <div class="card-role">Team Captain</div>
+        <p class="card-bio">Leads race-day strategy and holds the team's direction across every subsystem.</p>
+        <div class="meters">
+          <div class="meter-row"><span class="meter-label">Leadership</span><div class="meter-track" data-level="9"></div></div>
+          <div class="meter-row"><span class="meter-label">Strategy</span><div class="meter-track" data-level="8"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="num-badge">#02</span><div class="avatar">S</div></div>
+        <div class="card-name">Sadhana V</div>
+        <div class="card-role">Vice Captain &amp; Innovation Team Captain</div>
+        <p class="card-bio">Deputises for the captain and drives the team's R&amp;D on new ideas and systems.</p>
+        <div class="meters">
+          <div class="meter-row"><span class="meter-label">Innovation</span><div class="meter-track" data-level="9"></div></div>
+          <div class="meter-row"><span class="meter-label">Leadership</span><div class="meter-track" data-level="8"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="num-badge">#03</span><div class="avatar">D</div></div>
+        <div class="card-name">Daneyaa Prinitaa</div>
+        <div class="card-role">Team Manager &amp; Social Media Captain</div>
+        <p class="card-bio">Runs day-to-day team operations and owns the team's voice online.</p>
+        <div class="meters">
+          <div class="meter-row"><span class="meter-label">Operations</span><div class="meter-track" data-level="9"></div></div>
+          <div class="meter-row"><span class="meter-label">Content</span><div class="meter-track" data-level="8"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="num-badge">#04</span><div class="avatar">P</div></div>
+        <div class="card-name">Praveen S</div>
+        <div class="card-role">Design Team Captain</div>
+        <p class="card-bio">Owns the chassis and overall vehicle design, keeping every subsystem talking to each other.</p>
+        <div class="meters">
+          <div class="meter-row"><span class="meter-label">CAD Design</span><div class="meter-track" data-level="9"></div></div>
+          <div class="meter-row"><span class="meter-label">Fabrication</span><div class="meter-track" data-level="7"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="num-badge">#05</span><div class="avatar">A</div></div>
+        <div class="card-name">Abishaek C</div>
+        <div class="card-role">Electrical Lead</div>
+        <p class="card-bio">Handles wiring harnesses, the battery management system, and on-board telemetry.</p>
+        <div class="meters">
+          <div class="meter-row"><span class="meter-label">Circuit Design</span><div class="meter-track" data-level="8"></div></div>
+          <div class="meter-row"><span class="meter-label">Telemetry</span><div class="meter-track" data-level="8"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="num-badge">#06</span><div class="avatar">A</div></div>
+        <div class="card-name">Abinash T</div>
+        <div class="card-role">Transmission Lead</div>
+        <p class="card-bio">Builds and tunes the drivetrain, from motor mounting to final power delivery.</p>
+        <div class="meters">
+          <div class="meter-row"><span class="meter-label">Drivetrain</span><div class="meter-track" data-level="8"></div></div>
+          <div class="meter-row"><span class="meter-label">Fabrication</span><div class="meter-track" data-level="7"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="num-badge">#07</span><div class="avatar">G</div></div>
+        <div class="card-name">Gavril P</div>
+        <div class="card-role">Braking Lead</div>
+        <p class="card-bio">Designs and tests the braking system, balancing stopping power against weight.</p>
+        <div class="meters">
+          <div class="meter-row"><span class="meter-label">Braking Sys.</span><div class="meter-track" data-level="8"></div></div>
+          <div class="meter-row"><span class="meter-label">Testing</span><div class="meter-track" data-level="7"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="num-badge">#08</span><div class="avatar">A</div></div>
+        <div class="card-name">Aswin S</div>
+        <div class="card-role">Steering Lead</div>
+        <p class="card-bio">Owns the steering geometry and linkage, tuning feel and response for the driver.</p>
+        <div class="meters">
+          <div class="meter-row"><span class="meter-label">Steering Sys.</span><div class="meter-track" data-level="8"></div></div>
+          <div class="meter-row"><span class="meter-label">Fabrication</span><div class="meter-track" data-level="7"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="num-badge">#09</span><div class="avatar">R</div></div>
+        <div class="card-name">Rakshitha SPS</div>
+        <div class="card-role">Business Lead</div>
+        <p class="card-bio">Manages sponsorships, budgeting, and partner relationships that keep the team on track.</p>
+        <div class="meters">
+          <div class="meter-row"><span class="meter-label">Sponsorship</span><div class="meter-track" data-level="9"></div></div>
+          <div class="meter-row"><span class="meter-label">Budgeting</span><div class="meter-track" data-level="8"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="num-badge">#10</span><div class="avatar">H</div></div>
+        <div class="card-name">Harikishor G</div>
+        <div class="card-role">Aesthetics Lead</div>
+        <p class="card-bio">Shapes the livery, bodywork finish, and visual identity of the car and team.</p>
+        <div class="meters">
+          <div class="meter-row"><span class="meter-label">Livery Design</span><div class="meter-track" data-level="9"></div></div>
+          <div class="meter-row"><span class="meter-label">Finishing</span><div class="meter-track" data-level="7"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="sponsors">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Fuel The Build</div>
+        <h2 class="sec-title">Sponsorship &amp; Partners</h2>
+      </div>
+      <p class="sec-note">Every tier keeps a kart on the grid.</p>
+    </div>
+    <p class="sponsor-intro">Join us in driving the future of sustainable mobility. Sponsorship offers visibility among students, faculty, and industry professionals — while directly funding the parts and travel that get our kart to the grid.</p>
+
+    <div class="sponsor-grid">
+      <div class="sponsor-card">
+        <div>
+          <div class="sponsor-tier">Bronze</div>
+          <div class="sponsor-price">₹1k &ndash; 5k</div>
+          <ul class="sponsor-features">
+            <li>Logo on T-shirt</li>
+            <li>Social media mentions</li>
+            <li>Digital creative inclusion</li>
+          </ul>
+        </div>
+        <button class="btn btn-ghost">Support Us</button>
+      </div>
+
+      <div class="sponsor-card">
+        <div>
+          <div class="sponsor-tier">Silver</div>
+          <div class="sponsor-price">₹6k &ndash; 10k</div>
+          <ul class="sponsor-features">
+            <li>Vehicle stickers</li>
+            <li>Event coverage tags</li>
+            <li>Banner / poster branding</li>
+            <li>All Bronze benefits</li>
+          </ul>
+        </div>
+        <button class="btn btn-ghost">Support Us</button>
+      </div>
+
+      <div class="sponsor-card featured">
+        <span class="sponsor-badge">Best Value</span>
+        <div>
+          <div class="sponsor-tier">Gold</div>
+          <div class="sponsor-price">₹11k+</div>
+          <ul class="sponsor-features">
+            <li>Prominent car branding</li>
+            <li>Priority mentions</li>
+            <li>Booklet logo placement</li>
+            <li>All Silver benefits</li>
+          </ul>
+        </div>
+        <button class="btn btn-primary">Support Us</button>
+      </div>
+
+      <div class="sponsor-card">
+        <div>
+          <div class="sponsor-tier">Special</div>
+          <div class="sponsor-price">₹1L+</div>
+          <ul class="sponsor-features">
+            <li>Exclusive title sponsor</li>
+            <li>Pit area display stand</li>
+            <li>High visibility branding</li>
+            <li>All Gold benefits</li>
+          </ul>
+        </div>
+        <button class="btn btn-ghost">Support Us</button>
+      </div>
+    </div>
+
+    <div class="past-sponsors">
+      <div class="sec-head">
+        <div>
+          <div class="sec-tag">Our Backers</div>
+          <h2 class="sec-title">Past &amp; Present Sponsors</h2>
+        </div>
+        <p class="sec-note">The partners who keep us on track.</p>
+      </div>
+
+      <div class="sponsor-carousel-wrap">
+        <div class="sponsor-carousel" id="sponsorCarousel">
+          <div class="sponsor-logo-card">
+            <div class="sponsor-logo-box"><img src="" alt="SolidWorks logo"></div>
+            <div class="sponsor-logo-name">SolidWorks</div>
+            <p class="sponsor-logo-desc">CAD software partner powering every chassis and component design iteration.</p>
+          </div>
+
+          <div class="sponsor-logo-card">
+            <div class="sponsor-logo-box"><img src="" alt="Ansys logo"></div>
+            <div class="sponsor-logo-name">Ansys</div>
+            <p class="sponsor-logo-desc">Simulation tools helping us validate structural and thermal performance before build.</p>
+          </div>
+
+          <div class="sponsor-logo-card">
+            <div class="sponsor-logo-box"><img src="" alt="Chara logo"></div>
+            <div class="sponsor-logo-name">Chara</div>
+            <p class="sponsor-logo-desc">Supporting our team with resources that keep the build on schedule.</p>
+          </div>
+
+          <div class="sponsor-logo-card">
+            <div class="sponsor-logo-box"><img src="" alt="MRF logo"></div>
+            <div class="sponsor-logo-name">MRF</div>
+            <p class="sponsor-logo-desc">Tyre partner giving us the grip and confidence to push every lap.</p>
+          </div>
+
+          <div class="sponsor-logo-card">
+            <div class="sponsor-logo-box"><img src="" alt="Torus Robotics logo"></div>
+            <div class="sponsor-logo-name">Torus Robotics</div>
+            <p class="sponsor-logo-desc">Engineering collaborators backing our electronics and control systems.</p>
+          </div>
+
+          <div class="sponsor-logo-card">
+            <div class="sponsor-logo-box"><img src="" alt="Rocket Car Wash logo"></div>
+            <div class="sponsor-logo-name">Rocket Car Wash</div>
+            <p class="sponsor-logo-desc">Keeping our kart race-day ready, spotless from paddock to podium.</p>
+          </div>
+
+          <div class="sponsor-logo-card">
+            <div class="sponsor-logo-box"><img src="" alt="Sponsor logo"></div>
+            <div class="sponsor-logo-name">CSC (covai seenu & company)</div>
+            <p class="sponsor-logo-desc">A valued partner supporting our journey to the grid.</p>
+          </div>
+
+          <div class="sponsor-logo-card">
+            <div class="sponsor-logo-box"><img src="" alt="Sponsor logo"></div>
+            <div class="sponsor-logo-name">J.E.W. (Jepaul Engineering Works)</div>
+            <p class="sponsor-logo-desc">A valued partner supporting our journey to the grid.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="join" class="join">
+  <div class="wrap">
+    <div class="join-panel">
+      <span class="sparkle" aria-hidden="true">&#10022;</span>
+      <h2>Want on the crew?</h2>
+      <p>We're always looking for drivers, engineers, and anyone willing to learn. No experience required — just curiosity and a willingness to get your hands dirty.</p>
+      <div class="socials">
+        <a href="https://www.instagram.com/apex_raceline?igsh=cXg1ZWFleXNjaW1o" target="_blank" rel="noopener">Instagram</a>
+        <a href="mailto:teamapex4469@gmail.com">Email the Team</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; 2026 Apex Raceline. Built by the team, for the team.</p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.meter-track').forEach(track => {
+    const level = parseInt(track.getAttribute('data-level'), 10) || 0;
+    for (let i = 0; i < 10; i++) {
+      const seg = document.createElement('div');
+      seg.className = 'meter-seg';
+      track.appendChild(seg);
+    }
+    track.dataset.filled = level;
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        const tracks = entry.target.querySelectorAll('.meter-track');
+        tracks.forEach(track => {
+          const level = parseInt(track.dataset.filled, 10);
+          const trackSegs = track.querySelectorAll('.meter-seg');
+          trackSegs.forEach((seg, i) => {
+            if (i < level) {
+              setTimeout(() => seg.classList.add('on'), i * 40);
+            }
+          });
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.card').forEach(card => observer.observe(card));
+
+  document.querySelectorAll('.sponsor-card .btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelector('#join')?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
