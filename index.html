@@ -110,32 +110,21 @@
   /* Hero visual */
   .hero-visual{ position:relative; }
   .hero-photo{
-    position:relative; border-radius:32px; overflow:visible;
+    position:relative; border-radius:32px; overflow:hidden;
     aspect-ratio:4/4.6; width:100%;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .hero-photo::before{
-    content:''; position:absolute; inset:0; border-radius:32px; overflow:hidden;
     background:
       radial-gradient(ellipse 80% 60% at 30% 10%, rgba(143,199,255,0.14), transparent 60%),
       linear-gradient(165deg, var(--navy-mid) 0%, var(--navy) 55%, var(--navy-deep) 100%);
-    box-shadow:0 30px 60px rgba(5,11,36,0.25);
-    z-index:0;
+    display:flex; align-items:center; justify-content:center;
   }
   .hero-photo svg{ width:56%; height:auto; opacity:0.95; }
-.hero-photo-img{
-  position:absolute;
-  left:50%; bottom:-4%;
-  transform:translateX(-50%);
-  width:135%; max-width:none; height:auto;
-  object-fit:contain; object-position:bottom;
-  z-index:1;
-  filter:drop-shadow(0 24px 30px rgba(5,11,36,0.35));
-  pointer-events:none;
-}
+  .hero-photo-img{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; object-position:center;
+  }
   .badge{
     position:absolute; background:var(--card); border-radius:16px;
-    padding:14px 20px; box-shadow:0 16px 40px rgba(5,11,36,0.22); z-index:2;
+    padding:14px 20px; box-shadow:0 16px 40px rgba(5,11,36,0.22);
   }
   .badge .num{ font-family:'Archivo Black', sans-serif; color:var(--ice); font-size:24px; line-height:1; }
   .badge .lbl{ font-family:'Inter', sans-serif; font-size:12.5px; color:var(--steel); margin-top:4px; }
@@ -357,9 +346,9 @@
       </div>
       <div class="hero-visual">
         <div class="hero-photo">
-          <img src="logo2-removebg.png" alt="Apex Raceline kart" class="hero-photo-img">
+          <img src="1000067182.png" alt="Apex Raceline kart" class="hero-photo-img">
         </div>
-      </div>no 
+      </div>
     </div>
   </div>
 </header>
