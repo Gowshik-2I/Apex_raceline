@@ -44,9 +44,10 @@
   /* ===== NAV ===== */
   nav{
     position:sticky; top:0; z-index:50;
-    background:rgba(255,255,255,0.86);
+    background:linear-gradient(120deg, rgba(11,27,74,0.94), rgba(20,43,107,0.90) 55%, rgba(62,107,250,0.85));
     backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
+    border-bottom:1px solid rgba(143,199,255,0.25);
+    box-shadow:0 8px 24px rgba(11,27,74,0.18);
   }
   nav .wrap{
     display:flex; align-items:center; justify-content:space-between;
@@ -54,14 +55,14 @@
   }
   .brand{ display:flex; align-items:center; gap:16px; flex-shrink:0; }
   .brand-logo{ height:40px; width:40px; object-fit:cover; border-radius:50%; display:block; }
-  .brand-divider{ width:1px; height:28px; background:var(--line); }
-  .brand-name{ font-family:'Lora', serif; font-weight:500; font-size:15px; letter-spacing:0.02em; color:var(--ink); line-height:1.2; }
+  .brand-divider{ width:1px; height:28px; background:rgba(255,255,255,0.25); }
+  .brand-name{ font-family:'Lora', serif; font-weight:500; font-size:15px; letter-spacing:0.02em; color:#fff; line-height:1.2; }
   .brand-name b{ display:block; font-weight:600; }
 
-  .navlinks{ display:flex; gap:26px; font-family:'Lora', serif; font-size:15px; color:var(--ink-soft); }
+  .navlinks{ display:flex; gap:26px; font-family:'Lora', serif; font-size:15px; color:#C9D6F5; }
   .navlinks a{ text-decoration:none; transition:color 0.2s ease; }
-  .navlinks a:hover, .navlinks a:focus-visible{ color:var(--ice); }
-  .navlinks a:focus-visible{ outline:2px solid var(--ice); outline-offset:4px; border-radius:2px; }
+  .navlinks a:hover, .navlinks a:focus-visible{ color:var(--sky); }
+  .navlinks a:focus-visible{ outline:2px solid var(--sky); outline-offset:4px; border-radius:2px; }
   @media (max-width:960px){ .navlinks{ display:none; } }
 
   /* ===== HERO ===== */
@@ -120,10 +121,6 @@
   .hero-photo-img{
     position:absolute; inset:0; width:100%; height:100%;
     object-fit:cover; object-position:center;
-  }
-  .hero-photo .stripe{
-    position:absolute; inset:0; z-index:2;
-    background:repeating-linear-gradient(115deg, transparent 0 46px, rgba(62,107,250,0.14) 46px 50px);
   }
   .badge{
     position:absolute; background:var(--card); border-radius:16px;
@@ -255,7 +252,7 @@
   .past-sponsors{ margin-top:70px; }
   .sponsor-carousel-wrap{
     overflow-x:auto; overflow-y:hidden; padding:10px 4px 22px;
-    scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch;
+    -webkit-overflow-scrolling:touch;
   }
   .sponsor-carousel-wrap::-webkit-scrollbar{ height:8px; }
   .sponsor-carousel-wrap::-webkit-scrollbar-track{ background:var(--mist); border-radius:999px; }
@@ -263,11 +260,17 @@
   .sponsor-carousel-wrap::-webkit-scrollbar-thumb:hover{ background:var(--steel); }
   .sponsor-carousel{ display:flex; gap:20px; width:max-content; }
   .sponsor-logo-card{
-    scroll-snap-align:start;
-    width:220px; flex:0 0 auto;
+    width:calc((min(1176px, 100vw - 64px) - 40px) / 3);
+    flex:0 0 auto;
     background:var(--card); border:1px solid var(--line); border-radius:20px;
     padding:26px 22px; text-align:center;
     transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  @media (max-width:720px){
+    .sponsor-logo-card{ width:calc((100vw - 64px - 20px) / 2); }
+  }
+  @media (max-width:480px){
+    .sponsor-logo-card{ width:calc(100vw - 64px); }
   }
   .sponsor-logo-card:hover{ transform:translateY(-4px); box-shadow:0 20px 40px rgba(11,27,74,0.08); border-color:#D6DEF2; }
   .sponsor-logo-box{
@@ -343,8 +346,7 @@
       </div>
       <div class="hero-visual">
         <div class="hero-photo">
-          
-          <img src="logo2.jpg" alt="Apex Raceline kart" class="hero-photo-img">
+          <img src="1000067182.png" alt="Apex Raceline kart" class="hero-photo-img">
         </div>
       </div>
     </div>
@@ -750,6 +752,43 @@
       document.querySelector('#join')?.scrollIntoView({ behavior: 'smooth' });
     });
   });
+
+  // Auto-scroll sponsor carousel
+  (function(){
+    const wrap = document.querySelector('.sponsor-carousel-wrap');
+    const track = document.getElementById('sponsorCarousel');
+    if (!wrap || !track) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    // Duplicate cards for a seamless loop
+    const originalCards = Array.from(track.children);
+    originalCards.forEach(card => {
+      track.appendChild(card.cloneNode(true));
+    });
+
+    let isHovered = false;
+    let isDown = false;
+    const speed = 0.6; // pixels per frame
+
+    wrap.addEventListener('mouseenter', () => isHovered = true);
+    wrap.addEventListener('mouseleave', () => isHovered = false);
+    wrap.addEventListener('touchstart', () => isDown = true, { passive:true });
+    wrap.addEventListener('touchend', () => isDown = false, { passive:true });
+
+    function step(){
+      if (!isHovered && !isDown) {
+        wrap.scrollLeft += speed;
+        const halfWidth = track.scrollWidth / 2;
+        if (wrap.scrollLeft >= halfWidth) {
+          wrap.scrollLeft -= halfWidth;
+        }
+      }
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  })();
 </script>
 
 </body>
